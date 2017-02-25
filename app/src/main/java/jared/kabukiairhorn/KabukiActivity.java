@@ -65,7 +65,7 @@ public class KabukiActivity extends AppCompatActivity {
         if(mediaPlayer.isPlaying()) {
             mediaPlayer.seekTo(0);
         }
-        
+
         mediaPlayer.start();
     }
 
