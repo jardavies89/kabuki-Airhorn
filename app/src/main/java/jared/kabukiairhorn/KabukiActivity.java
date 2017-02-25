@@ -1,5 +1,6 @@
 package jared.kabukiairhorn;
 
+import android.media.MediaPlayer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ public class KabukiActivity extends AppCompatActivity {
 
     @BindView(R.id.kabuki_button)
     ImageButton mKabukiButton;
+    MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +25,15 @@ public class KabukiActivity extends AppCompatActivity {
         init();
     }
 
+    @Override
+    public void onDestroy() {
+        mediaPlayer.stop();
+        super.onDestroy();
+    }
+
     private void init() {
         mKabukiButton.setOnTouchListener(kabukiButtonListener);
+        mediaPlayer = MediaPlayer.create(this, R.raw.kabuki);
     }
 
     private View.OnTouchListener kabukiButtonListener = new View.OnTouchListener() {
@@ -33,6 +42,7 @@ public class KabukiActivity extends AppCompatActivity {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     swapButtonAsset(true);
+                    startTheKabuki();
                     break;
                 case MotionEvent.ACTION_UP:
                     swapButtonAsset(false);
@@ -49,6 +59,14 @@ public class KabukiActivity extends AppCompatActivity {
         } else {
             mKabukiButton.setImageDrawable(ActivityCompat.getDrawable(this, R.drawable.button_not_pressed));
         }
+    }
+
+    private void startTheKabuki() {
+        if(mediaPlayer.isPlaying()) {
+            mediaPlayer.seekTo(0);
+        }
+        
+        mediaPlayer.start();
     }
 
 
